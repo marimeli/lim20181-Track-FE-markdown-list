@@ -15,7 +15,7 @@ describe('validatePath', () => {
   }); 
 
   it('Debería validar la url C:\Users\MelissaCasas\Documents\lim20181-Track-FE-markdown-list-master y mostrar el siguiente texto: Es una ruta relativa', () => {
-    expect(validatePath('C:\Users\MelissaCasas\Documents\lim20181-Track-FE-markdown-list-master')).toBe('Es una ruta relativa');
+    expect(validatePath('np\Users\MelissaCasas\Documents\lim20181-Track-FE-markdown-list-master')).toBe('Es una ruta relativa');
   }); 
  
 });

@@ -1,11 +1,11 @@
-#! / usr / bin / env node
+#!/usr/bin/env node
 const [, , ...args] = process.argv
 console.log(`hello world ${args}`)
 
 const r = new RegExp('^(?:[a-z]+:)?//', 'i');
 const abs = 'Es una url absoluta';
 const rel = 'Es una ruta relativa';
-    
+
 /* let options = {
     stats=true,
     validate=true
@@ -23,6 +23,9 @@ const validatePath = (path) => {
     console.log(rel);
     return rel;
 };
+
+validatePath(args);
+
 module.exports = validatePath;
 
 
