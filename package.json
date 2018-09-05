@@ -2,7 +2,7 @@
   "name": "marimeli-md-links",
   "version": "1.0.0",
   "description": "Es una librería que verifica los links dentro de archivos markdown",
-  "main": "cli.js",
+  "main": "index.js",
   "bin": {
     "md-links": "cli.js"
   },
