@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs-extra');
+let links = [];
 
 //Función que resuelve una ruta como absoluta
 const validatePath = (root) => {
@@ -10,11 +11,11 @@ const validatePath = (root) => {
         console.log('Es una ruta relativa convertida a absoluta');
         console.log(path.resolve());
     }
-  }
+};
 validatePath('readme.md');
 
 //Función que valida si es un archivo
-const validateIsFile = (file) =>
+const validateIsFile = (file) => {
     fs.lstat(file)
         .then(stat => {
             console.log('Archivo ' + stat.isFile());
@@ -23,6 +24,7 @@ const validateIsFile = (file) =>
         .catch(err => {
             console.log(err);
         });
+};
 validateIsFile('readme.md');
 
 //Función que valida si es un directorio
@@ -39,10 +41,13 @@ const validateIsDirectory = (directory) => {
 validateIsDirectory('C:\\Users\\Melissa Casas\\Documents\\markdown\\lim20181-Track-FE-markdown-list\\test\\directory');
 
 //Función que lee un archivo (falta filtrar que sea md)
+console.log(path.extname('readme.md')); //md
 const readFileContent = (path) => {
     fs.readFile(path, 'utf8')
         .then(content => {
             console.log('Contenido File: ' + content);
+            /* console.log(path.extname('readme.md')); */
+           /*  console.log(path.extname(path)); */
         })
         .catch(err => {
             console.log(err);
@@ -62,6 +67,24 @@ const readDirectoryContent = (path) => {
         });
 };
 readDirectoryContent('C:\\Users\\Melissa Casas\\Documents\\markdown\\lim20181-Track-FE-markdown-list\\test\\directory');
+
+//Función que extrae los links de un archivo markdown
+const getLinksMd = (file) => {
+  };
+
+//Función para validar status de un link 
+const validateStatusLink = (link) => {
+   //ok
+   //fail
+};
+
+//Función para validar el stats de los links
+const validateStats = (path) => {
+    //total
+    //unicos 
+    //rotos
+};
+
 
 const mdLinks = (path, options) => {
     return new Promise((resolve, reject) => {
