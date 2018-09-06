@@ -40,20 +40,27 @@ const validateIsDirectory = (directory) => {
 };
 validateIsDirectory('C:\\Users\\Melissa Casas\\Documents\\markdown\\lim20181-Track-FE-markdown-list\\test\\directory');
 
-//Función que lee un archivo (falta filtrar que sea md)
-console.log(path.extname('readme.md')); //md
+//Función que lee un archivo 
 const readFileContent = (path) => {
     fs.readFile(path, 'utf8')
         .then(content => {
             console.log('Contenido File: ' + content);
             /* console.log(path.extname('readme.md')); */
-           /*  console.log(path.extname(path)); */
+            /*  console.log(path.extname(path)); */
         })
         .catch(err => {
             console.log(err);
         });
 };
 readFileContent('readme.md');
+
+//Función que verifica que sea un archivo markdown
+const checkFileMd = (nameFile) => {
+    const fileMd = /\.(md|mkdn|mdown|markdown?)$/i;
+ /*    return fileMd.test(path.extname(nameFile)); */
+    console.log(path.extname(nameFile));
+};
+checkFileMd('readme.md')
 
 //Función que lee un directorio(falta recursividad)
 const readDirectoryContent = (path) => {
@@ -70,12 +77,13 @@ readDirectoryContent('C:\\Users\\Melissa Casas\\Documents\\markdown\\lim20181-Tr
 
 //Función que extrae los links de un archivo markdown
 const getLinksMd = (file) => {
-  };
+
+};
 
 //Función para validar status de un link 
 const validateStatusLink = (link) => {
-   //ok
-   //fail
+    //ok
+    //fail
 };
 
 //Función para validar el stats de los links
