@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs-extra');
-let links = [];
+const fetch = require('node-fetch');
 
 //Función que resuelve una ruta como absoluta
 const validatePath = (root) => {
@@ -57,7 +57,7 @@ readFileContent('readme.md');
 //Función que verifica que sea un archivo markdown
 const checkFileMd = (nameFile) => {
     const fileMd = /\.(md|mkdn|mdown|markdown?)$/i;
- /*    return fileMd.test(path.extname(nameFile)); */
+    /*    return fileMd.test(path.extname(nameFile)); */
     console.log(path.extname(nameFile));
 };
 checkFileMd('readme.md')
@@ -76,9 +76,33 @@ const readDirectoryContent = (path) => {
 readDirectoryContent('C:\\Users\\Melissa Casas\\Documents\\markdown\\lim20181-Track-FE-markdown-list\\test\\directory');
 
 //Función que extrae los links de un archivo markdown
-const getLinksMd = (file) => {
-
+/* const getLinksMd = (file) => {
+    let linksMd = [];
+    const textLink = /\[(.*)\]/gi;
+    const hrefLink = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&/=]*)/g;
+    //Agregar los links al array de objetos
+    linksMd.push({
+        text: textLink,
+        href: hrefLink,
+        file: path
+    });
+    console.log(linksMd);
 };
+getLinksMd('readme.md'); */
+
+//Ejemplito de Match
+var cadena = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+var expresion = /[A-E]/gi;
+var array_emparejamientos = cadena.match(expresion);
+console.log(array_emparejamientos);
+
+/* Usando fetch para pedir archivo y consumir la respuesta(contenido)
+let promise = fetch('readme.md');
+promise.then(res => {
+    return res.json();
+}).then(json => {
+    console.log(json);
+}); */
 
 //Función para validar status de un link 
 const validateStatusLink = (link) => {
@@ -88,6 +112,7 @@ const validateStatusLink = (link) => {
 
 //Función para validar el stats de los links
 const validateStats = (path) => {
+    //preguntar el estado!! usando node fetch para eso
     //total
     //unicos 
     //rotos
@@ -98,9 +123,9 @@ const mdLinks = (path, options) => {
     return new Promise((resolve, reject) => {
         if (!path) reject('Ingrese un archivo o directorio');
         const pathAbs = path.resolve(path); //aqui resuelve las rutas que se ingresan como absolutas
-        console.log(path.resolve(path));
+        /* console.log(path.resolve(path));
         console.log(pathAbs);
-        console.log('antes de resolve arr')
+        console.log('antes de resolve arr') */
         setTimeout(() => {
             resolve([
                 {
