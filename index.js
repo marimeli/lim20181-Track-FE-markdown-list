@@ -11,70 +11,46 @@ const validatePath = (root) => {
     }
 };
 
-//Función que valida si la ruta ingresada es un archivo o directorio
-const validateIsFileOrDirectory = (root) => {
-        lstat(root)
+//Función que valida si la ruta ingresada es un archivo o directorio. Debería retornar un array de archivos
+const validateIsFileOrDirectory = (path) => {
+    return lstat(path) // stat about a file
         .then(stat => {
+            let arrayLinks3 = []            
             if (stat.isFile()) { //verifica si es archivo
-                console.log(root);
-                return [root]
+                return [path]
             } else {
-                readdir(root) //Sino es carpeta, entonces la lee
+                return readdir(path) //Sino es carpeta, entonces la lee
                     .then(files => {
                         for (const file in files) {
                             const element = files[file];
                         }
-                        files.forEach(file => { //recorre cada carpeta para saber qué hay dentro
-                             const archivo = resolve(root + '/' + file);
-                             validateIsFileOrDirectory(archivo)
+                        const arrayOfPromises = files.map(file => { //recorre cada carpeta para saber qué hay dentro
+                            const archivo = resolve(path,file);
+                            return validateIsFileOrDirectory(archivo)  
                         })
+                        Promise.all(arrayOfPromises)
+                            .then(respuestas => {
+                                respuestas.forEach(res => {
+                                    arrayLinks3 = arrayLinks3.concat(res)
+                                    console.log('concate', arrayLinks3)
+                                })
+                                // console.log('f', arrayLinks3);
+                                // return arrayLinks3;
+                            })
                     })
-             }
+            }
         })
-        .catch(err => {
-            console.log(`El archivo o file no existe ${err.path}`);
-            return err;
-        });
+        // .catch(err => {
+        //     console.log(`El archivo o file no existe ${err.path}`);
+        //     return err;
+        // });
 };
 
-validateIsFileOrDirectory('C:\\Users\\Melissa Casas\\Documents\\markdown\\lim20181-Track-FE-markdown-list\\test\\directory');
+validateIsFileOrDirectory(process.cwd() + '/test/directory')
+    .then(a => console.log('j',a))
+
 
 /* validateIsFileOrDirectory('C:\\Users\\Melissa Casas\\Documents\\markdown\\lim20181-Track-FE-markdown-list\\test\\directory')
 .then(result => {
     console.log(result)
 });  */
-
-//Ejemplo de promesa
-
-function validateLink(arrayLinks) {
-    return arrayLinks.map(link => {
-        return fetch(link)
-        .then(res => {
-            return { status: res.status, text: "OK" }
-        })
-        .catch(e => {
-            return { status: "404", text: "Fail"}
-        })
-    })
-}
-
-const arrayLinks = [
-    "https://google.com",
-    "https://github.com"
-]
-
-function Hola() {
-    return new Promise((resolve, reject) => {
-        Promise.all(validateLink(arrayLinks))
-        .then(result => {
-            resolve(result)
-        })
-        .catch(e => {
-            reject(e)
-        })
-    })
-};
-
-Hola().then(res => {
-    console.log(res)
-});
