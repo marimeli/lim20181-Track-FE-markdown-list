@@ -47,15 +47,6 @@ const getArrFiles = (path) => {
 getArrFiles(process.cwd() + '/test/directory')
     .then(arrFiles => console.log('array de files', arrFiles))
 
-//Función que lee un archivo markdown 
-/* const readMd = arrFilesMd => readFile(arrFilesMd, 'utf8')
-    .then(content => content)
-    .catch(err => err);
-
-readMd('readme.md').then(e =>
-    console.log(e)
-);  */
-
 //Función que extrae los links de un archivo markdown. Debería retornar un array de links
 const getLinksMd = (arrayFiles) => {
     return new Promise((resolve, reject) => {
@@ -80,8 +71,7 @@ const getLinksMd = (arrayFiles) => {
 getLinksMd(['readme.md']).then( o => console.log('ver link', o));
 
 //Función que recibe array de links y sirve para validar status de un link: ok/fail
-//Devuelve el status de cada link validado
-//Usando fetch para pedir archivo y consumir la respuesta(contenido)
+//Devuelve el status de cada link validado //Usando fetch para pedir archivo y consumir la respuesta(contenido)
 const arrayLinks = [
     "https://google.com",
     "https://github.com"
@@ -128,3 +118,17 @@ const validateStats = (path) => {
     //rotos
 };
 
+const mdLinks = (path, options) => {
+    return new Promise((resolve, reject) => {
+        if (!path) reject('Ingrese un archivo o directorio');
+        const arrFilesMd = getArrFiles(resolve(path)) //aqui resuelve las rutas que se ingresan como absolutas
+        console.log(arrFilesMd)
+        //.then(arrFiles => console.log('array de files', arrFiles)
+        //.then(readMd)   
+        if (arrFilesMd.length === 0) {
+            resolve('Tu archivo o carpeta no tiene links');
+        }
+    })
+};
+
+module.exports = mdLinks;
