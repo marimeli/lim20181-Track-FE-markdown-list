@@ -60,20 +60,17 @@ const getLinksMd = (arrayFiles) => {
 //Función que recibe array de links y retorna un nuevo array con solo el contenido href 
 //Usando fetch para pedir archivo y consumir la respuesta(contenido)
 const validateLink = (arrayLinks) => {
-    const arrLinks = arrayLinks.map(objLink => objLink.href)
-    return Promise.all(arrLinks)
-    arrLinks.map(link => {
-        return fetch(link)
-            .then(response => {
-                const links = arrayLinks.map((objLinkContent, statsLink) => {
-                    objLinkContent.status = response[statsLink].status;
-                    objLinkContent.statusText = response[statsLink].statusText;
-                    return objLinkContent;
-                });
-                return links;
-            })
-    });
-};
+  const arrLinks = arrayLinks.map(objLink => fetch(objLink.href))
+  return Promise.all(arrLinks)
+    .then(response => {
+      const links = arrayLinks.map((objLinkContent, statsLink) => {
+        objLinkContent.status = response[statsLink].status;
+        objLinkContent.statusText = response[statsLink].statusText;
+        return objLinkContent;
+      });
+      return links;
+    })
+ };
 
 //Función para validar el stats de los links
 const validateStats = (path) => {
@@ -83,19 +80,24 @@ const validateStats = (path) => {
     //rotos
 };
 
-const mdLinks = (path, options) => {
-    return new Promise((resolve, reject) => {
-        if (!path) reject('Ingrese un archivo o directorio');
-        const arrFilesMd = getArrFiles(resolve(path)) //aqui resuelve las rutas que se ingresan como absolutas
-        if (arrFilesMd.length === 0) {
-            resolve('Tu archivo o carpeta no tiene links');
-        }
-    })
-};
-
-module.exports = mdLinks;
-
 getArrFiles(process.cwd() + '/test/directory') // Me va a indicar donde se está ejecutando el archivo
     .then(arrFiles => arrFiles.filter(verifyIsMd))
-    .then(getLinksMd).then(validateLink).then(console.log)
+    .then(getLinksMd)
+    .then(validateLink)
+    .then(console.log)
 
+
+ /*    const mdLinks = (path, options) => {
+      return new Promise((resolve, reject) => {
+          if (!path) reject('Ingrese un archivo o directorio');
+          const arrFilesMd = getArrFiles(resolve(path)) //aqui resuelve las rutas que se ingresan como absolutas
+          if (arrFilesMd.length === 0) {
+              resolve('Tu archivo o carpeta no tiene links');
+          }
+      })
+  };
+  
+  module.exports = mdLinks;
+   */
+    
+    
