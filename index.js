@@ -80,9 +80,12 @@ const validateStats = (path) => {
   //unicos
   //rotos
 };
+
 const mdLinks = (path, options) => {
   //console.log('path', path);
-  //if (!path) reject('Ingrese un archivo o directorio');
+    /* return new Promise((resolve, reject) => {
+  }) */
+  if (!path) reject('Ingrese un archivo o directorio');
   getArrFiles(resolve(path))// Me va a indicar donde se está ejecutando el archivo
     .then(verifyIsMd)
     .then(getLinksMd)
@@ -90,8 +93,7 @@ const mdLinks = (path, options) => {
     .then(o => {
       console.log('hola o', o);
     })
-  /* return new Promise((resolve, reject) => {
-  }) */
+
 };
 
 //mdLinks('readme.md')
