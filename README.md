@@ -1,13 +1,57 @@
-Reading a file!
+# Markdown Links 
 
-Hey! This is a read me.
+Es una librería que verifica los links que se encuentran dentro de archivos en formato `Markdown` y reporta las estadísticas de los links totales, únicos y rotos que contiene la ruta ingresada.
 
-#### `mdLinks(path, options)`
- ![img_20180807_161238402](https://user-images.githubusercontent.com/32286663/43803949-faa92368-9a5f-11e8-95d8-181de7121d34.jpg)
+#### Versión
 
- ##### Argumentos
- - `Path`: Ruta absoluta o relativa al archivo markdown. Si la ruta pasada es relativa, debe resolverse como relativa al directorio desde donde se invoca node - _currentworking directory_).
- `md-links <path-to-file> [options]`
- ![img_20180807_165632844](https://user-images.githubusercontent.com/32286663/43805090-1d60faee-9a64-11e8-974d-78f0382f7bc0.jpg)
+1.0.0
 
-[Markdown](https://es.wikipedia.org/wiki/Markdown)
+## Instalación
+
+```
+npm i marimeli-md-links
+```
+
+## CLI (Línea de comando)
+
+```
+md-links <path> [options]
+```
+##### Argumentos
+
+- `path`: Ruta absoluta o relativa al archivo o directorio.
+
+- `options`:
+  - `--validate` o `-v`: Ingresando esta opción se verificará si el link funciona o no. Como resultado se observará si el estado del link es "OK" o "FAIL".
+  - `--stats` o `-s`: Ingresando esta opción se visualizará un texto con estadísticas básicas sobre los links, como la cantidad de links encontrados y cuántos son únicos.
+  - También se puede combinar --stats y --validate para obtener estadísticas que necesiten de los resultados de la validación.
+
+##### Ejemplos de uso:
+
+```sh
+$ md-links ./some/example.md
+./some/example.md http://algo.com/2/3/ Link a algo
+./some/example.md https://otra-cosa.net/algun-doc.html algún doc
+./some/example.md http://google.com/ Google
+```
+
+```sh
+$ md-links ./some/example.md --validate
+./some/example.md http://algo.com/2/3/ ok 200 Link a algo
+./some/example.md https://otra-cosa.net/algun-doc.html fail 404 algún doc
+./some/example.md http://google.com/ ok 301 Google
+```
+
+```sh
+$ md-links ./some/example.md --stats
+Total: 3
+Unique: 3
+```
+
+```sh
+$ md-links ./some/example.md -s -v
+Total: 3
+Unique: 3
+Broken: 1
+```
+[Planeación del proyecto](https://github.com/marimeli/lim20181-Track-FE-markdown-list/projects/2)
