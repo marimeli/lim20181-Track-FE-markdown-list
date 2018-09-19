@@ -74,40 +74,50 @@ const validateLinks = (arrayLinks) => {
 };
 
 //Función para validar el stats de los links. //preguntar el estado!! usando node fetch para eso
-const validateStats = (arrLinks) => ({
+const validateStats = (arrLinks) => ([{
   total: arrLinks.length,
-  unique: [...new Set(arrLinks.map(link => link.href))]
-});
+  unique: [...new Set(arrLinks.map(link => link.href))] //corregir deberia retornar un number, corregir estructura no set
+}]);
 
 //Función para validar el stats de los links. 
-const validateLinksBroken = (arrLinks) => arrLinks.filter(link => link.status !== 200).length;
+const validateLinksBroken = (arrLinks) => arrLinks.filter(link => link.status === '404').length; // verifica .status
 
+//Función para ver stats y validar los links. 
 const validateBothOptions = (links) => {
-  Promise.all(links.map(links))
-    .then((links) => {
-      resolve([{
-        total, unique: validateStats(links),
+  return new Promise((resolve, reject) => {
+    resolve([
+      {
+        total: validateStats(links)[0].total,
+        unique: validateStats(links)[0].unique,
         broken: validateLinksBroken(links)
       }])
-    });
+  })
 };
 
+
 const mdLinks = (path, options) => {
-  if (!path) reject('Ingrese un archivo o directorio');
+  //if (!path) reject('Ingrese un archivo o directorio');
   getArrFiles(resolve(path))// Me va a indicar donde se está ejecutando el archivo
     .then(verifyIsMd)
     .then(getLinksMd)
-    .then(links => !options ? links : getLinksMd(links))
-    .then(links => options.validate && !options.stats ? links : validateLinks(links))
-    .then(links => !options.validate && options.stats ? links : validateStats(links))
-    .then(links => options.validate && options.stats ? links : validateBothOptions(links))
+    .then(links => {
+      if (options.validate && options.stats) {
+        return validateBothOptions(links);
+      } else if (!options.validate && options.stats) {
+        return validateStats(links)
+      } else if (options.validate && !options.stats) {
+        return validateLinks(links)
+      } else {
+        links;
+      }
+    })
     .then(o => {
-      console.log('hola o', o);
+      console.log('resultado final', o);
     })
 };
 
 //mdLinks('readme.md')
-mdLinks((process.cwd() + '//test//directory'), '')
+mdLinks((process.cwd() + '//test//directory'), { stats: true, validate: true })
 
 module.exports = mdLinks;
 
