@@ -59,7 +59,7 @@ const getLinksMd = (arrayFiles) => {
 };
 
 //Función que recibe array de links y retorna un nuevo array con solo el contenido href 
-//Usando fetch para pedir archivo y consumir la respuesta(contenido)
+//Usando fetch para pedir archivo y consumir la respuesta(contenido)//ok, fail
 const validateLinks = (arrayLinks) => {
   const arrLinks = arrayLinks.map(objLink => fetch(objLink.href))
   return Promise.all(arrLinks)
@@ -73,27 +73,37 @@ const validateLinks = (arrayLinks) => {
     })
 };
 
-//Función para validar el stats de los links
-const validateStats = (path) => {
-  //preguntar el estado!! usando node fetch para eso
-  //total
-  //unicos
-  //rotos
+//Función para validar el stats de los links. //preguntar el estado!! usando node fetch para eso
+const validateStats = (arrLinks) => ({
+  total: arrLinks.length,
+  unique: [...new Set(arrLinks.map(link => link.href))]
+});
+
+//Función para validar el stats de los links. 
+const validateLinksBroken = (arrLinks) => arrLinks.filter(link => link.status !== 200).length;
+
+const validateBothOptions = (links) => {
+  Promise.all(links.map(links))
+    .then((links) => {
+      resolve([{
+        total, unique: validateStats(links),
+        broken: validateLinksBroken(links)
+      }])
+    });
 };
 
 const mdLinks = (path, options) => {
-  //console.log('path', path);
-    /* return new Promise((resolve, reject) => {
-  }) */
   if (!path) reject('Ingrese un archivo o directorio');
   getArrFiles(resolve(path))// Me va a indicar donde se está ejecutando el archivo
     .then(verifyIsMd)
     .then(getLinksMd)
-    .then(result => !options ? result : validateLinks(result))
+    .then(links => !options ? links : getLinksMd(links))
+    .then(links => options.validate && !options.stats ? links : validateLinks(links))
+    .then(links => !options.validate && options.stats ? links : validateStats(links))
+    .then(links => options.validate && options.stats ? links : validateBothOptions(links))
     .then(o => {
       console.log('hola o', o);
     })
-
 };
 
 //mdLinks('readme.md')
