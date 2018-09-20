@@ -33,6 +33,8 @@ const getArrFiles = (path) => {
     });
 };
 
+
+
 //Función que verifica que sea un archivo markdown y los filtra
 const verifyIsMd = (arrFiles) => new Promise((resolve, reject) => {
   resolve(arrFiles.filter(file => /\.(md|mkdn|mdown|markdown?)$/i.test(extname(file))))
@@ -59,7 +61,7 @@ const getLinksMd = (arrayFiles) => {
 };
 
 //Función que recibe array de links y retorna un nuevo array con solo el contenido href 
-//Usando fetch para pedir archivo y consumir la respuesta(contenido)//ok, fail
+//Usando fetch para pedir archivo y consumir la respuesta(contenido)//ok, fail // agregar catch
 const validateLinks = (arrayLinks) => {
   const arrLinks = arrayLinks.map(objLink => fetch(objLink.href))
   return Promise.all(arrLinks)
@@ -94,30 +96,25 @@ const validateBothOptions = (links) => {
   })
 };
 
-
 const mdLinks = (path, options) => {
-  //if (!path) reject('Ingrese un archivo o directorio');
-  getArrFiles(resolve(path))// Me va a indicar donde se está ejecutando el archivo
+  return getArrFiles(resolve(path))
     .then(verifyIsMd)
     .then(getLinksMd)
     .then(links => {
       if (options.validate && options.stats) {
         return validateBothOptions(links);
-      } else if (!options.validate && options.stats) {
-        return validateStats(links)
       } else if (options.validate && !options.stats) {
         return validateLinks(links)
-      } else {
-        links;
-      }
-    })
-    .then(o => {
-      console.log('resultado final', o);
+      } else if (!options.validate && options.stats) {
+        return validateStats(links)
+      }  
+        return links;
     })
 };
 
 //mdLinks('readme.md')
-mdLinks((process.cwd() + '//test//directory'), { stats: true, validate: true })
+mdLinks((process.cwd() + '//test//directory'), { stats: false, validate: false }).then(o => {
+  console.log('resultado final', o);
+})
 
 module.exports = mdLinks;
-
