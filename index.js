@@ -33,8 +33,6 @@ const getArrFiles = (path) => {
     });
 };
 
-
-
 //Función que verifica que sea un archivo markdown y los filtra
 const verifyIsMd = (arrFiles) => new Promise((resolve, reject) => {
   resolve(arrFiles.filter(file => /\.(md|mkdn|mdown|markdown?)$/i.test(extname(file))))
@@ -117,7 +115,3 @@ const mdLinks = (path, options) => {
 };
 
 module.exports = mdLinks;
-
-/* mdLinks(('C:\\Users\\Melissa Casas\\Documents\\markdown\\lim20181-Track-FE-markdown-list\\test\\directory'), { stats: false, validate: false }).then(o => {
-    console.log('resultado final', o);   
-  }) */

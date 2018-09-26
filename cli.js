@@ -9,10 +9,10 @@ console.log(path); */
 const mdLinks = require('./index');
 const program = require('commander');
 
-let options = {
+const options = {
     validate: false,
     stats: false
-}
+};
 
 program
     .arguments('<path>')
@@ -49,3 +49,6 @@ program
     //mdLinks('readme.md')
     /* console.log('resultado final', arrayLinks); */
 
+    /* mdLinks(('C:\\Users\\Melissa Casas\\Documents\\markdown\\lim20181-Track-FE-markdown-list\\test\\directory'), { stats: false, validate: false }).then(o => {
+    console.log('resultado final', o);   
+  }) */
