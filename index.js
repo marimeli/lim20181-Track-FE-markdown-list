@@ -61,11 +61,12 @@ const getLinksMd = (arrayFiles) => {
 };
 
 //Función que recibe array de links y retorna un nuevo array con solo el contenido href 
-//Usando fetch para pedir archivo y consumir la respuesta(contenido)//ok, fail // agregar catch
+//Usando fetch para pedir archivo y consumir la respuesta(contenido)//ok, fail // agregar catch!!! corregir eso!!
 const validateLinks = (arrayLinks) => {
   const arrLinks = arrayLinks.map(objLink => fetch(objLink.href))
   return Promise.all(arrLinks)
     .then(response => {
+      /* return { status: response.status, text: "OK" } */
       const links = arrayLinks.map((objLinkContent, statsLink) => {
         objLinkContent.status = response[statsLink].status;
         objLinkContent.statusText = response[statsLink].statusText;
@@ -73,6 +74,9 @@ const validateLinks = (arrayLinks) => {
       });
       return links;
     })
+    .catch(e => {
+      return { status: "404", text: "Fail" };
+  })
 };
 
 //Función para validar el stats de los links. //preguntar el estado!! usando node fetch para eso
@@ -112,9 +116,8 @@ const mdLinks = (path, options) => {
     })
 };
 
-//mdLinks('readme.md')
-mdLinks((process.cwd() + '//test//directory'), { stats: false, validate: false }).then(o => {
-  console.log('resultado final', o);
-})
-
 module.exports = mdLinks;
+
+/* mdLinks(('C:\\Users\\Melissa Casas\\Documents\\markdown\\lim20181-Track-FE-markdown-list\\test\\directory'), { stats: false, validate: false }).then(o => {
+    console.log('resultado final', o);   
+  }) */
