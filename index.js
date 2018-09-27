@@ -38,7 +38,7 @@ const verifyIsMd = (arrFiles) => new Promise((resolve, reject) => {
   resolve(arrFiles.filter(file => /\.(md|mkdn|mdown|markdown?)$/i.test(extname(file))))
 })
 
-//Función lee y que extrae los links de un archivo markdown. Retorna un array de links
+//Función lee y que extrae el texto de los links de un archivo markdown. Retorna un array de links
 const getLinksMd = (arrayFiles) => {
   return new Promise((resolve, reject) => {
     const links = [];
@@ -58,33 +58,36 @@ const getLinksMd = (arrayFiles) => {
   })
 };
 
-//Función que recibe array de links y retorna un nuevo array con solo el contenido href 
-//Usando fetch para pedir archivo y consumir la respuesta(contenido)//ok, fail // agregar catch!!! corregir eso!!
+//Función que recibe array de links y retorna un nuevo array con el status del link(ok/fail)
+//Usando fetch para pedir archivo y consumir la respuesta(contenido)
+
+
 const validateLinks = (arrayLinks) => {
   const arrLinks = arrayLinks.map(objLink => fetch(objLink.href))
   return Promise.all(arrLinks)
+   /*  .catch(e => {
+      return { status: 404, statusText: 'Fail' };
+    }) */
     .then(response => {
       /* return { status: response.status, text: "OK" } */
-      const links = arrayLinks.map((objLinkContent, statsLink) => {
-        objLinkContent.status = response[statsLink].status;
-        objLinkContent.statusText = response[statsLink].statusText;
+      const links = arrayLinks.map((objLinkContent, i) => {
+        objLinkContent.status = response[i].status;
+        objLinkContent.statusText = response[i].statusText;
         return objLinkContent;
       });
       return links;
     })
-    .catch(e => {
-      return { status: "404", text: "Fail" };
-  })
-};
+ };
 
-//Función para validar el stats de los links. //preguntar el estado!! usando node fetch para eso
+//Función para validar el stats de los links. (Pregunta el estado: links total y únicos)
 const validateStats = (arrLinks) => ([{
   total: arrLinks.length,
-  unique: [...new Set(arrLinks.map(link => link.href))] //corregir deberia retornar un number, corregir estructura no set
+  unique: new Set(arrLinks.map(link => link.href)).size 
 }]);
 
-//Función para validar el stats de los links. 
-const validateLinksBroken = (arrLinks) => arrLinks.filter(link => link.status === '404').length; // verifica .status
+//Función para validar los links rotos 
+const validateLinksBroken = (arrLinks) => arrLinks.filter(link => link.status === '404').length; 
+
 
 //Función para ver stats y validar los links. 
 const validateBothOptions = (links) => {
@@ -98,6 +101,7 @@ const validateBothOptions = (links) => {
   })
 };
 
+//Función principal que se exporta
 const mdLinks = (path, options) => {
   return getArrFiles(resolve(path))
     .then(verifyIsMd)
@@ -109,8 +113,8 @@ const mdLinks = (path, options) => {
         return validateLinks(links)
       } else if (!options.validate && options.stats) {
         return validateStats(links)
-      }  
-        return links;
+      }
+      return links;
     })
 };
 

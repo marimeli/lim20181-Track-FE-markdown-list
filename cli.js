@@ -1,11 +1,5 @@
 #!/usr/bin/env node
 
-/* const [,, ...argvs] = process.argv;
-const totalArgvs = argvs.length;
-const path = argvs[0];
-console.log( argvs);
-console.log(path); */
-
 const mdLinks = require('./index');
 const program = require('commander');
 
@@ -25,7 +19,7 @@ program
             .then(arrayLinks => {
                 if (options.validate && !options.stats) {
                     arrayLinks.forEach(link => {
-                        console.log(`${link.file}\t ${link.href}\t ${link.status}\t${link.statusText}`);
+                        console.log(`${link.href}\t ${link.text}\t ${link.file}\t ${link.status}\t${link.statusText}`);
                     })
                 } else if (!options.validate && options.stats) {
                     arrayLinks.forEach(link => {
@@ -36,19 +30,8 @@ program
                         console.log(`total:${link.total}\nunique:${link.unique}\nbroken:${link.broken}`)
                     })
                 } else {
-                    arrayLinks.forEach(link => {
-                        console.log(`${link.file}\t ${link.href}\t ${link.text}`); 
-                    })
+                        console.log(arrayLinks);  
                 }
             })
     })
     .parse(process.argv);
-
-
-    /* C:\\Users\\Melissa Casas\\Documents\\markdown\\lim20181-Track-FE-markdown-list\\test\\directory */
-    //mdLinks('readme.md')
-    /* console.log('resultado final', arrayLinks); */
-
-    /* mdLinks(('C:\\Users\\Melissa Casas\\Documents\\markdown\\lim20181-Track-FE-markdown-list\\test\\directory'), { stats: false, validate: false }).then(o => {
-    console.log('resultado final', o);   
-  }) */
