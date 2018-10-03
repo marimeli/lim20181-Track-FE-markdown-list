@@ -114,7 +114,7 @@ describe('mdLinks', () => {
   });
   
   test('debería retornar un array con un objeto con la propiedad total, únique', () => {
-    options.stats = true
+    options.stats = true,
     options.validate = false
     return mdLinks('test/directory', options)
       .then(arrLinks => {
@@ -123,7 +123,23 @@ describe('mdLinks', () => {
         )
       })
   });
- 
+
+  test('debería retornar un array con un objeto con la propiedad total, únique, broken', () => {
+    options.stats = true,
+    options.validate = true
+    return mdLinks('test/directory', options)
+      .then(arrLinks => {
+        expect(arrLinks).toEqual(
+          [{ total: 7, unique: 5, broken: 0 }]
+        )
+      })
+  });
+
+/*   test('si la ruta pasada no existe debería rechazar la promesa', () => {
+    expect.assertions(1);
+    return expect(mdLinks('test/test', options)).rejects.toMatch('El archivo o file no existe');
+  });
+  */
 });
 
 

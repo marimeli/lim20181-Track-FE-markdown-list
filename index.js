@@ -89,7 +89,7 @@ const validateStats = (arrLinks) => ([{
 }]);
 
 //Función para validar los links rotos 
-const validateLinksBroken = (arrLinks) => arrLinks.filter(link => link.status === '404').length;
+const validateLinksBroken = (arrLinks) => arrLinks.filter(link => link.status === 404).length;
 
 //Función para ver stats y validar los links. 
 const validateBothOptions = (links) => {
