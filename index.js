@@ -58,36 +58,38 @@ const getLinksMd = (arrayFiles) => {
   })
 };
 
-//Función que recibe array de links y retorna un nuevo array con el status del link(ok/fail)
+//Función que recibe un objeto que representa el link y retorna el mismo objeto con dos nuevas propiedades(ok/fail: status del link)
 //Usando fetch para pedir archivo y consumir la respuesta(contenido)
-
-
-const validateLinks = (arrayLinks) => {
-  const arrLinks = arrayLinks.map(objLink => fetch(objLink.href))
-  return Promise.all(arrLinks)
-   /*  .catch(e => {
-      return { status: 404, statusText: 'Fail' };
-    }) */
-    .then(response => {
-      /* return { status: response.status, text: "OK" } */
-      const links = arrayLinks.map((objLinkContent, i) => {
-        objLinkContent.status = response[i].status;
-        objLinkContent.statusText = response[i].statusText;
-        return objLinkContent;
+const validateEachLink = ({ text, href, file }) => {
+  return fetch(href)
+    .catch(() => {
+      return ({
+        status: 404,
+        statusText: 'Fail'
       });
-      return links;
     })
- };
+    .then(response => {
+      return ({
+        href, text, file,
+        status: response.status,
+        statusText: response.statusText
+      })
+    })
+};
+
+
+const validateLinks = (arrLinks) => {
+  return Promise.all(arrLinks.map(objLink => validateEachLink(objLink)))
+};
 
 //Función para validar el stats de los links. (Pregunta el estado: links total y únicos)
 const validateStats = (arrLinks) => ([{
   total: arrLinks.length,
-  unique: new Set(arrLinks.map(link => link.href)).size 
+  unique: new Set(arrLinks.map(link => link.href)).size
 }]);
 
 //Función para validar los links rotos 
-const validateLinksBroken = (arrLinks) => arrLinks.filter(link => link.status === '404').length; 
-
+const validateLinksBroken = (arrLinks) => arrLinks.filter(link => link.status === '404').length;
 
 //Función para ver stats y validar los links. 
 const validateBothOptions = (links) => {
