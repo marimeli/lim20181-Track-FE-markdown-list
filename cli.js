@@ -29,6 +29,10 @@ program
                     arrayLinks.forEach(link => {
                         console.log(`total:${link.total}\nunique:${link.unique}\nbroken:${link.broken}`)
                     })
+                } else if (!options.validate && !options.stats) {
+                    arrayLinks.forEach(link => {
+                        console.log(`${link.href}\t ${link.text}\t ${link.file}\t`);
+                    })
                 } else {
                         console.log(arrayLinks);  
                 }

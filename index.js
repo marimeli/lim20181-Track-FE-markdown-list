@@ -14,9 +14,8 @@ const getArrFiles = path => lstat(path) // stat about a file
         .then(arrayOfPromises => Promise.all(arrayOfPromises))
         .then(files => {
           let arrayPath = [];
-          files.forEach(file =>
-            arrayPath = arrayPath.concat(file))
-          return arrayPath;
+          files.forEach(file => arrayPath = arrayPath.concat(file))
+          return arrayPath; 
         })
     }
   })
