@@ -4,7 +4,7 @@ Es una librería que verifica los links que se encuentran dentro de archivos en 
 
 #### Versión
 
-1.0.0
+1.0.1
 
 ## Instalación
 
