@@ -10,8 +10,8 @@ const options = {
 
 program
     .arguments('<path>')
-    .option('-v, --validate', 'Validar links si están rotos o no')
-    .option('-s, --stats', 'Mostrar stats de los links')
+    .option('-v, --validate')
+    .option('-s, --stats')
     .action(path => {
         options.validate = program.validate;
         options.stats = program.stats;

@@ -24,7 +24,7 @@ const getArrFiles = path => lstat(path) // stat about a file
 //Función que verifica que sea un archivo markdown y los filtra
 const verifyIsMd = arrFiles => arrFiles.filter(file => /\.(md|mkdn|mdown|markdown?)$/i.test(extname(file)));
 
-//Función lee y que extrae el texto de los links de un archivo markdown. Retorna un array de links
+//Función que lee y extrae el texto de los links de un archivo markdown. Retorna un array de links
 const getLinksMd = arrayFiles => new Promise((resolve, reject) => {
   const links = [];
   arrayFiles.forEach(file => {
